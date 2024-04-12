@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { ref, uploadBytesResumable } from "firebase/storage";
 import { storage } from "../firebase";
 import { useAuth } from "./contexts/AuthProvider";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Sidebar = () => {
   const { currentUser } = useAuth();
@@ -69,20 +71,30 @@ const Sidebar = () => {
       (snapshot) => {
         const progress =
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        console.log("Upload is " + progress + "% done");
+        // console.log("Upload is " + progress + "% done");
         setLoading(true);
       },
       (error) => {
-        console.error("Error uploading file:", error);
+        // console.error("Error uploading file:", error);
         setLoading(false);
         setError(error.message);
       },
       () => {
-        console.log("File successfully uploaded!");
+        // console.log("File successfully uploaded!");
         setLoading(false);
         setFile(null);
         setIsSecondaryPopupOpen(false)
         setTriggerFetch(prev => !prev);
+        toast.success('🦄 Uploaded!', {
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          });
       }
     );
   }
@@ -92,11 +104,12 @@ const Sidebar = () => {
       ref={sidebarRef}
       className="w-1/6 flex-grow border-r border-gray-300 relative"
     >
+      <ToastContainer/>
       <button
         onClick={toggleMenu}
         className="bg-blue-500 text-white px-4 py-2 rounded-full p-1 m-3 relative z-20"
       >
-        {isMenuOpen ? "- Click to Close" : "+ Click to Uplaod"}
+        {isMenuOpen ? "Click to Close" : "Click to Uplaod"}
       </button>
       <hr className="my-4 border-t-2 border-gray-300"></hr>
       <Link to="">
@@ -105,12 +118,12 @@ const Sidebar = () => {
         </button>
       </Link>
       <hr className="my-4 border-t-2 border-gray-300"></hr>
-      <Link to="">
+      {/* <Link to="">
         <button className="block px-4 py-2 text-gray-800 rounded-lg hover:bg-gray-200 w-full text-left border-gray-300">
           Folder
         </button>
       </Link>
-      <hr className="my-4 border-t-2 border-gray-300"></hr>
+      <hr className="my-4 border-t-2 border-gray-300"></hr> */}
       {isMenuOpen && (
         <div className="m-2 absolute left-0 top-16 mt-2 w-48 bg-white rounded-lg shadow-md z-10">
           <button

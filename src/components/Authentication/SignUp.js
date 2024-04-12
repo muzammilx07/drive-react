@@ -12,18 +12,24 @@ export default function Signup() {
   const [loading, setLoading] = useState(false)
 
   async function handleSubmit(e) {
-    e.preventDefault()
+    e.preventDefault();
 
     try {
-      setError("")
-      setLoading(true)
-      await signup(emailRef.current.value, passwordRef.current.value)
-      navigate("/DashBoard")
-    } catch {
-      setError("Failed to create an account")
+        setError("");
+        setLoading(true);
+        await signup(emailRef.current.value, passwordRef.current.value);
+        navigate("/Dashboard");
+    } catch (error) {
+        if (error.code === 'auth/email-already-in-use') {
+            setError("The email address is already in use by another account.");
+        } else {
+            setError("Failed to create an account. Please check the details and try again.");
+        }
+        console.error(error);
     }
-    setLoading(false)
-  }
+    setLoading(false);
+}
+
 
   return (
     <div className="h-screen flex items-center justify-center">
@@ -66,16 +72,17 @@ export default function Signup() {
                 />
               </div>
             </div>
-
+            
             <div>
               <button
                 type="submit"
                 className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
-                Sign up
+               {loading ? "Signing ..." : "Sign In"}
               </button>
             </div>
           </form>
+          <p className="mt-10 text-center">{error && <p style={{ color: 'red' }}>{error}</p>}</p>
           <p className="mt-10 text-center text-sm text-gray-500">
             Already have an account?{" "}
             <Link to="/login" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
