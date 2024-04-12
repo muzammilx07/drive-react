@@ -21,7 +21,7 @@ const Navbar = () => {
 
   return (
     <div className="relative flex min-w-screen h-16 shadow-xl bg-white m-0 px-10 flex-row items-center justify-between border-b-2 border-gray-300">
-      <Link to='/DashBoard'>LOGO</Link>
+      <Link to='/DashBoard'>D-DRIVE</Link>
       <div className="relative">
         <div
           className="profile rounded-full border-solid border-2 hover:border-dotted border-sky-500 cursor-pointer"
